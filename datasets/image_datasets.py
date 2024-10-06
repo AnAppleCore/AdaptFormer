@@ -33,13 +33,16 @@ def build_image_dataset(args):
         dataset_train = datasets.ImageFolder(os.path.join(args.data_path, 'train'), transform=transform_train)
         dataset_val = datasets.ImageFolder(os.path.join(args.data_path, 'val'), transform=transform_val)
         nb_classes = 1000
-
+    elif args.dataset == 'imagenet-100':
+        dataset_train = datasets.ImageFolder(os.path.join(args.data_path, 'train'), transform=transform_train)
+        dataset_val = datasets.ImageFolder(os.path.join(args.data_path, 'val'), transform=transform_val)
+        nb_classes = 100
     elif args.dataset == 'cifar100':
         dataset_train = datasets.CIFAR100(os.path.join(args.data_path, 'cifar100'), transform=transform_train, train=True)
         dataset_val = datasets.CIFAR100(os.path.join(args.data_path, 'cifar100'), transform=transform_val, train=False)
         nb_classes = 100
     elif args.dataset == 'flowers102':
-        from flowers102 import Flowers102
+        from .flowers102 import Flowers102
         dataset_train = Flowers102(os.path.join(args.data_path, 'flowers102'), split='train', transform=transform_train)
         dataset_val = Flowers102(os.path.join(args.data_path, 'flowers102'), split='test', transform=transform_val)
         nb_classes = 102
@@ -53,6 +56,16 @@ def build_image_dataset(args):
         dataset_train = Food101(os.path.join(args.data_path, 'food101'), split='train', transform=transform_train)
         dataset_val = Food101(os.path.join(args.data_path, 'food101'), split='test', transform=transform_val)
         nb_classes = 101
+    elif args.dataset == 'cub200':
+        from .cub200 import CUB200
+        dataset_train = CUB200(args.data_path, train=True, transform=transform_train)
+        dataset_val = CUB200(args.data_path, train=False, transform=transform_val)
+        nb_classes = 200
+    elif args.dataset == 'imagenet-r':
+        from .imagenet_r import Imagenet_R
+        dataset_train = Imagenet_R(args.data_path, train=True, transform=transform_train)
+        dataset_val = Imagenet_R(args.data_path, train=False, transform=transform_val)
+        nb_classes = 200
     else:
         raise ValueError(args.dataset)
 
